@@ -1,7 +1,5 @@
 import { test, expect } from './fixtures/calTest';
 
-// testacc1889
-
 test.describe('navigation', () => {
   test.beforeEach(async ({ homePage }) => {
     await homePage.load();
@@ -32,6 +30,7 @@ test.describe('navigation', () => {
   });
 
   test('Delete event', async ({ homePage }) => {
+    // Delete event
     await homePage.clickOnEventCardWithName();
     await homePage.clickOnDeleteBtn();
 
