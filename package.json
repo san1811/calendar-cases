@@ -10,5 +10,8 @@
   "devDependencies": {
     "@playwright/test": "^1.41.2",
     "@types/node": "^20.11.16"
+  },
+  "dependencies": {
+    "googleapis": "^132.0.0"
   }
 }
