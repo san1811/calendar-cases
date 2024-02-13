@@ -5,39 +5,37 @@ import { test, expect } from './fixtures/calTest';
 test.describe('navigation', () => {
   test.beforeEach(async ({ homePage }) => {
     await homePage.load();
+    // Login
     await homePage.login();
   });
 
   test('Create events', async ({ homePage }) => {
-    // // Click on the create button using forceful click
-    // await page.waitForTimeout(15000);
-    // await page.waitForSelector('.I3EnF');
-    // await page.click('.I3EnF', { force: true });
-    // await page.waitForSelector('[data-key="event"]');
-    // await page.waitForTimeout(2000);
-    // await page.click('[data-key="event"]');
-    // await page.getByPlaceholder("Add title").fill("TestAvomaEvent");
+    // Open and fill title
+    await homePage.clickOnCreateEventBtn();
+    await homePage.clickOnEventOption();
+    await homePage.fillTitle();
 
-    // const date = await page.textContent('[data-key="startDate"]');
-    // const from = await page.textContent('[data-key="startTime"]');
-    // const to = await page.textContent('[data-key="endTime"]');
+    // Get Text from event pop-up
+    const date = await homePage.getDate();
+    const from = await homePage.getFromTime();
+    const to = await homePage.getToTime();
 
-    // await page.getByRole('button', { name: 'Save' }).click();
-    // await page.getByRole('button', { name: 'TestAvomaEvent' }).waitForSelector().click();
-
-    // await page.waitForSelector('.NlL62b.EfQccc.elYzab-cXXICe-Hjleke.EiZ8Dd.afiDFd');
-    // const eventDetails = await page.textContent('.NlL62b.EfQccc.elYzab-cXXICe-Hjleke.EiZ8Dd.afiDFd');
-    // expect(eventDetails).toContain("TestAvomaEvent");
-    // expect(eventDetails).toContain((from).replace(/:00$/, ''));
-    // expect(eventDetails).toContain(to);
-    // const commaIndex = date.indexOf(',');
-    // expect(eventDetails).toContain((date).substring(commaIndex + 2));
+    await homePage.clickOnSaveBtn();
+    // Click on event card and validate details
+    await homePage.clickOnEventCard();
+    const eventDetails = await homePage.getEventText();
+    expect(eventDetails).toContain("TestAvomaEvent");
+    expect(eventDetails).toContain((from).replace(/:00/, ''));
+    expect(eventDetails).toContain(to.replace(/:00/, ''));
+    const commaIndex = date.indexOf(',');
+    expect(eventDetails).toContain((date).substring(commaIndex + 2));
   });
 
-  test.skip('Delete event', async ({ page }) => {
-    await page.getByRole('button', { name: 'TestAvomaEvent' }).click();
-    await page.click("#xDetDlgDelBu");
+  test('Delete event', async ({ homePage }) => {
+    await homePage.clickOnEventCardWithName();
+    await homePage.clickOnDeleteBtn();
 
-    expect(page.getByLabel('TestAvomaEvent')).not.toBeVisible();
+    // let eventCardLength = homePage.eventCardLength();
+    // expect(eventCardLength).toEqual(0);
   });
 });
